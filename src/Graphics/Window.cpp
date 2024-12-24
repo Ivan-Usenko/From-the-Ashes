@@ -1,6 +1,6 @@
-#include <System/Window.hpp>
+#include <Graphics/Window.hpp>
 
-namespace sys {
+namespace fta {
     Window::Window(int width, int height, std::string title) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -30,5 +30,10 @@ namespace sys {
 
     bool Window::shouldClose() {
 	return glfwWindowShouldClose(m_glfw_window);
+    }
+
+    void Window::clear(Color color) {
+	glClearColor(color.r, color.b, color.g, color.a);
+	glClear(GL_COLOR_BUFFER_BIT);
     }
 }
