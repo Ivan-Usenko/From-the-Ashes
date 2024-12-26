@@ -4,28 +4,41 @@
 #include <Config.h>
 #include <Graphics/Window.hpp>
 
-void handle_error(int err_code, const char* err_desc) {
-    std::cout << "Error has occured (0x" << std::hex << err_code << "): " << err_desc << std::endl;
-    glfwTerminate();
-    exit(1);
-}
-
 int main() {
-    glfwSetErrorCallback(handle_error);
-    glfwInit();
+    if (!glfwInit()) {
+	std::cerr << "Failed to initialize GLFW" << std::endl;
+	return 1;
+    }
     
     std::stringstream title;
-    title << "Game v" << GAME_VERSION_MAJOR <<  "." << GAME_VERSION_MINOR;
+    title << "From the Ashes (" << GAME_VERSION_MAJOR << "." << GAME_VERSION_MINOR << ")";
     fta::Window window(800, 600, title.str());
+    if (!window.isOpen()) {
+	std::cerr << "Failed to create window" << std::endl;
+	glfwTerminate();
+	return 1;
+    }
 
-    window.makeCurrent();
+    if (!window.makeCurrent()) {
+	std::cerr << "Failed to load GLAD" << std::endl;
+	glfwTerminate();
+	return 1;
+    }
+
+    float vertices[] = {
+	-0.5f, -0.5f, 0.f,
+	0.5f, -0.5f, 0.f,
+	0.f, 0.5f, 0.f
+    };
+
     while (!window.shouldClose()) {
 	window.clear(fta::Color(0.f, 0.f, 0.f, 1.f));
+
 
 	window.swapBuffers();
 	window.pollEvents();
     }
-
+    
     glfwTerminate();
     return 0;
 }

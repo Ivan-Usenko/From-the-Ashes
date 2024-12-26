@@ -9,7 +9,7 @@ project(From_the_Ashes VERSION 0.1)
 
 add_executable(client 
     "${PROJECT_SOURCE_DIR}/src/client.cpp"
-    "${PROJECT_SOURCE_DIR}/src/System/Window.cpp")
+    "${PROJECT_SOURCE_DIR}/src/Graphics/Window.cpp")
 
 # GLFW settings
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)

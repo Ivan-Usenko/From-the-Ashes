@@ -1,6 +1,10 @@
 #include <Graphics/Window.hpp>
 
 namespace fta {
+    void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
+    }
+
     Window::Window(int width, int height, std::string title) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -11,13 +15,23 @@ namespace fta {
 	m_height = height;
     }
 
-    void Window::makeCurrent() {
-	glfwMakeContextCurrent(m_glfw_window);
-	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    bool Window::isOpen() {
+	return m_glfw_window != NULL;
+    }
 
-	glViewport(0, 0, m_width, m_height);
+    bool Window::makeCurrent() {
+	glfwMakeContextCurrent(m_glfw_window);
+	glfwSetFramebufferSizeCallback(m_glfw_window, Window::framebuffer_size_callback);
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+	    return false;
+	}
+	
+	// Enable alpha blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	return true;
     }
 
     void Window::swapBuffers() {

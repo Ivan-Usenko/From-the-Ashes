@@ -6,10 +6,12 @@
 #include <Graphics/Color.hpp>
 
 namespace fta {
+
     class Window {
     public:
 	Window(int width, int height, std::string title);
-	void makeCurrent();
+	bool isOpen();
+	bool makeCurrent();
 	void swapBuffers();
 	void pollEvents();
 	bool shouldClose();
@@ -18,5 +20,7 @@ namespace fta {
 	GLFWwindow* m_glfw_window;
 	int m_width;
 	int m_height;
+
+	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
     };
 }
